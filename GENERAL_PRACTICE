@@ -1,1 +1,104 @@
+Top 10 C++ Operator Interview Questions (Concise Summary with Code)
+1. The Sequence Point Trap
+Question: What is the output of the following code? Code:
 
+C++
+int i = 10;
+i = i++ + ++i; // Undefined Behavior
+cout << i;
+Correct Answer: Undefined Behavior Key Logic: The variable i is modified more than once within a single expression without a sequence point. The C++ standard does not define the order in which the increments happen relative to the assignment, making the result compiler-dependent and unsafe.   
+
+2. Efficient Power of 2 Check
+Question: Which method checks if n is a power of 2 in O(1)? Code:
+
+C++
+bool isPowerOfTwo(int n) {
+    // Returns true if n is positive and has only one bit set
+    return (n > 0) && ((n & (n - 1)) == 0); 
+}
+Correct Answer: Bitwise Method Key Logic: Subtracting 1 from a power of 2 (e.g., 1000 -> 0111) flips all bits up to the rightmost set bit. Using Bitwise AND & on them results in 0. This operation is atomic and faster than division loops.   
+
+3. Logical Short-Circuiting
+Question: What is the final value of y? Code:
+
+C++
+int x = 10, y = 5;
+if (x > 20 && ++y > 5) {
+    // 'x > 20' is false, so '++y' is skipped
+}
+cout << y; // Prints 5
+Correct Answer: 5 (unchanged) Key Logic: The Logical AND (&&) operator evaluates left-to-right. Since x > 20 is False, the result is determined immediately. The right side (++y) is skipped (short-circuited) and never executes.   
+
+4. Ternary Operator Type Promotion
+Question: What is the type and value of result? Code:
+
+C++
+// 10 (int) is promoted to 10.0 (double) to match 10.5
+auto result = (true)? 10 : 10.5; 
+cout << result; // Prints 10.5
+Correct Answer: 10.5 (double) Key Logic: The ternary operator ?: must return a single common type. The compiler implicitly promotes the int (10) to a double (10.0) to match the precision of the second option (10.5).   
+
+5. Array Decay & sizeof
+Question: What is the output inside the function? Code:
+
+C++
+void func(int arr) {
+    // arr decays to int* (pointer)
+    cout << sizeof(arr); // Prints 4 (32-bit) or 8 (64-bit)
+}
+int main() {
+    int arr[8];
+    func(arr);
+}
+Correct Answer: Pointer Size (4 or 8 bytes) Key Logic: When an array is passed to a function, it "decays" into a pointer to its first element. You are printing the size of a pointer (int*), not the actual array size.   
+
+6. Relational Associativity
+Question: What is the value of result? Code:
+
+C++
+// Evaluated as ((30 > 20) > 10) -> (1 > 10) -> 0
+int result = 30 > 20 > 10; 
+cout << result; // Prints 0
+Correct Answer: 0 (False) Key Logic: Relational operators are left-associative.
+
+(30 > 20) evaluates to 1 (True).
+
+The expression becomes 1 > 10, which is False (0).   
+
+7. Assignment vs. Equality
+Question: Which block executes? Code:
+
+C++
+int x = 10;
+if (x = 5) { // Assigns 5 to x, returns 5 (True)
+    cout << "True Block";
+} else {
+    cout << "False Block";
+}
+Correct Answer: True Block Key Logic: This is an assignment (=), not a comparison (==). The expression assigns 5 to x and returns 5. Since 5 is non-zero, the if condition is treated as True.   
+
+8. The Comma Operator
+Question: What is the value of z? Code:
+
+C++
+// Evaluates 10, then 20, then returns 30
+int z = (10, 20, 30); 
+cout << z; // Prints 30
+Correct Answer: 30 Key Logic: The comma operator evaluates operands from left to right and discards all results except the last one. z is assigned the final value in the sequence.   
+
+9. Negative Modulus (C++11)
+Question: What is the result? Code:
+
+C++
+// Sign matches the dividend (-5)
+int res = -5 % 2; 
+cout << res; // Prints -1
+Correct Answer: -1 Key Logic: Since C++11, integer division truncates toward zero. The sign of the remainder always matches the sign of the dividend (the first number). Since -5 is negative, the result is negative.   
+
+10. Empty Class Size
+Question: What is the size of an empty class? Code:
+
+C++
+class Empty {};
+// Non-zero to ensure unique address
+cout << sizeof(Empty); // Prints 1
